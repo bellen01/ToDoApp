@@ -1,9 +1,21 @@
 import React from 'react';
 import Home from './screens/home';
+import InProgress from './screens/inProgress';
+import Done from './screens/done';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <Home />
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="InProgress" component={InProgress} />
+        <Stack.Screen name="Done" component={Done} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
