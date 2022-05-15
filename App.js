@@ -9,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
-// import { getFireStore, getDocs } from 'firebase/firestore';
+// import { getFirestore, getDocs } from 'firebase/firestore';
 // import firebase from 'firebase/compat/app';
 // import 'firebase/compat/auth';
 // import 'firebase/compat/firestore';
@@ -22,14 +22,15 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 // // Initialize Firebase
 // initializeApp(firebaseConfig);
 
-// const firestore = getFireStore();
+
 
 // const data = await getDocs({ firestore, type: 'ToDos' });
 // console.log(data);
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/auth';
+// import 'firebase/compat/firestore';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBv6LT3u6iVX6UhVp5dCKKaTORufJHWySE",
@@ -40,16 +41,58 @@ const firebaseConfig = {
   appId: "1:863612596390:web:56489eb82128bb56798467"
 };
 
-let app;
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc } from 'firebase/firestore/lite';
+// Follow this pattern to import other Firebase services
+// import { } from 'firebase/<service>';
 
-if (firebase.apps.length === 0) {
-  app = firebase.initializeApp(firebaseConfig)
-} else {
-  app = firebase.app();
-}
 
-const db = app.firestore();
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const todos = collection(db, 'ToDos');
+getDocs(todos).then((data) => {
+  console.log(data.size);
+  const sven = data.docs.map(doc => doc.data());
+  console.log(sven);
+});
+const docRef = doc(db, "ToDos", "ISA3QOTLTQ9d3NKuT8wb");
+getDoc(docRef).then(docSnap => {
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
+});
+
+
+
+
+// Get a list of cities from your database
+// async function getCities(db) {
+//   const citiesCol = collection(db, 'cities');
+//   const citySnapshot = await getDocs(citiesCol);
+//   const cityList = citySnapshot.docs.map(doc => doc.data());
+//   return cityList;
+// }
+
+// let app;
+
+// if (firebase.apps.length === 0) {
+//   app = firebase.initializeApp(firebaseConfig)
+// } else {
+//   app = firebase.app();
+// }
+
+// const db = app.firestore();
+// const firestore = getFirestore();
+// const auth = firebase.auth();
+
+// getDocs({
+//   firestore,
+//   type: 'ToDos'
+// }).then((data) => console.log(data));
+// // console.log(data);
 
 // export { db, auth };
 
