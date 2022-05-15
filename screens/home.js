@@ -9,7 +9,7 @@ import AddTodo from '../components/addTodo';
 export default function Home() {
 
     const [todos, setTodos] = useState([
-        { text: 'buy coffee', key: '1' },
+        { text: 'buy coffeeee', key: '1' },
         { text: 'create an app', key: '2' },
         { text: 'play on the switch', key: '3' }
     ]);

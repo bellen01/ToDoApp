@@ -7,6 +7,53 @@ import { NavigationContainer } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getFireStore, getDocs } from 'firebase/firestore';
+// import firebase from 'firebase/compat/app';
+// import 'firebase/compat/auth';
+// import 'firebase/compat/firestore';
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+
+
+// // Initialize Firebase
+// initializeApp(firebaseConfig);
+
+// const firestore = getFireStore();
+
+// const data = await getDocs({ firestore, type: 'ToDos' });
+// console.log(data);
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBv6LT3u6iVX6UhVp5dCKKaTORufJHWySE",
+  authDomain: "to-do-app-e6930.firebaseapp.com",
+  projectId: "to-do-app-e6930",
+  storageBucket: "to-do-app-e6930.appspot.com",
+  messagingSenderId: "863612596390",
+  appId: "1:863612596390:web:56489eb82128bb56798467"
+};
+
+let app;
+
+if (firebase.apps.length === 0) {
+  app = firebase.initializeApp(firebaseConfig)
+} else {
+  app = firebase.app();
+}
+
+const db = app.firestore();
+const auth = firebase.auth();
+
+// export { db, auth };
+
+
 const Tab = createMaterialTopTabNavigator();
 
 // const Stack = createNativeStackNavigator();
