@@ -9,13 +9,13 @@ export default function TodoItem({ item, deleteHandler, inProgressHandler, doneH
         <View style={styles.item}>
             <Text style={styles.itemText}>{item.text}</Text>
             <View style={styles.icons}>
-                <TouchableOpacity onPress={() => deleteHandler(item.key)} style={styles.touchables} >
+                <TouchableOpacity onPress={() => deleteHandler(item.id)} style={styles.touchables} >
                     <MaterialCommunityIcons name="delete" size={20} color="#333" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => inProgressHandler(item.key)} style={styles.touchables} >
+                <TouchableOpacity onPress={() => inProgressHandler(item.id)} style={styles.touchables} >
                     <MaterialCommunityIcons name="progress-clock" size={20} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => doneHandler(item.key)} style={styles.touchables} >
+                <TouchableOpacity onPress={() => doneHandler(item.id)} style={styles.touchables} >
                     <MaterialCommunityIcons name="check" size={20} color="black" />
                 </TouchableOpacity>
             </View>
