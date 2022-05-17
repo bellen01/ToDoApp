@@ -70,6 +70,9 @@ export default function Home() {
     const deleteHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id)
         await deleteDoc(todoDoc);
+        setToDos((prevToDos) => {
+            return prevToDos.filter(todo => todo.id != id)
+        })
     }
 
     const inProgressHandler = async (id) => {
@@ -103,7 +106,7 @@ export default function Home() {
                 <TextInput
                     autoCapitalize='none'
                     autoCorrect={false}
-                    clearButtonMode="always"
+                    // clearButtonMode="always"
                     value={query}
                     onChangeText={queryText => handleSearch(queryText)}
                     placeholder="Search"
@@ -128,9 +131,10 @@ export default function Home() {
 
     // search
     const handleSearch = (input) => {
-        const formattedQuery = input.toLowerCase();
-        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
-        setToDos(searchResult);
+        setQuery(input);
+        // const formattedQuery = input.toLowerCase();
+        // const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+        // setToDos(searchResult);
     };
 
 
