@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Header from '../components/header';
 import TodoItem from '../components/todoItem';
 import AddTodo from '../components/addTodo';
@@ -8,6 +9,9 @@ import SearchTodo from '../components/search';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
+import filter from 'lodash.filter';
+import { TextInput } from 'react-native-gesture-handler';
+import { contains } from '@firebase/util';
 
 
 const app = initializeApp(firebaseConfig);
@@ -33,23 +37,22 @@ export default function Home() {
     const [toDos, setToDos] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
+    const [query, setQuery] = useState('');
+    const [fullData, setFullData] = useState([]);
+
     useEffect(() => {
         const getToDoItems = async () => {
-            const data = await getDocs(todoCol);
-            setToDos(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            const dataCol = await getDocs(todoCol);
+            const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            const toDoList = data.filter(doc => doc.status == 0)
+            setToDos(toDoList);
+            setFullData(toDoList);
+            // setToDos(data);
+            // setFullData(data);
         }
         getToDoItems()
     }, [])
 
-    // const [todos, setTodos] = useState([
-    //     { text: 'buy teaaa', key: '1' },
-    //     { text: 'create an app', key: '2' },
-    //     { text: 'play on the switch', key: '3' }
-    // ]);
-
-    // const searchHandler = async () => {
-
-    // }
 
     const addNewToDoHandler = async (text) => {
         if (text.length > 3) {
@@ -83,6 +86,72 @@ export default function Home() {
         //console.log('done was clicked');
     }
 
+
+
+    function renderHeader() {
+        return (
+            <View
+                style={{
+                    backgroundColor: '#fff',
+                    padding: 10,
+                    marginVertical: 10,
+                    borderRadius: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                }}
+            >
+                <TextInput
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    clearButtonMode="always"
+                    value={query}
+                    onChangeText={queryText => handleSearch(queryText)}
+                    placeholder="Search"
+                    style={{
+                        backgroundColor: '#fff',
+                    }}
+                />
+                <View style={styles.icons}>
+                    <TouchableOpacity onPress={clearSearch} style={styles.touchables}>
+                        <MaterialCommunityIcons name="close" size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        )
+    }
+
+    const clearSearch = () => {
+        setQuery('');
+        setToDos(fullData);
+    }
+
+    // search
+    const handleSearch = (input) => {
+        const formattedQuery = input.toLowerCase();
+        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+        setToDos(searchResult);
+    };
+
+
+    // search
+    // const handleSearch = (input) => {
+    //     const formattedQuery = input.toLowerCase();
+    //     const filteredData = filter(fullData, text => {
+    //         return contains(text, formattedQuery);
+    //     });
+    //     setFullData(filteredData);
+    //     setQuery(input);
+    // };
+
+    // const contains = ({ text }, query) => {
+    //     const { text } = text;
+    //     if (text.includes(query)) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
     // const submitHandler = async (text) => {
 
     //     if (text.length > 3) {
@@ -105,12 +174,13 @@ export default function Home() {
         }}>
             <View style={styles.container}>
                 <StatusBar style="auto" />
-                <Header />
+                <Header title="To Do's" />
                 <View style={styles.content}>
                     {/* <SearchTodo searchHandler={ } /> */}
                     <AddTodo submitHandler={addNewToDoHandler} />
                     <View style={styles.list}>
                         <FlatList
+                            ListHeaderComponent={renderHeader}
                             keyExtractor={(item) => item.id}
                             data={toDos}
                             renderItem={({ item }) => (
@@ -136,5 +206,8 @@ const styles = StyleSheet.create({
     list: {
         marginTop: 20,
         flex: 1,
+    },
+    touchables: {
+        paddingLeft: 5
     }
 });
