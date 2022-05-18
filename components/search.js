@@ -1,59 +1,74 @@
-// import React, { useState } from 'react';
-// import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
-// export default function SearchTodo({ searchHandler }) {
+export default function Search({ searchHandler, clearSearch }) {
+    const [query, setQuery] = useState('');
 
-//     const [text, setText] = useState('');
+    const changeHandler = (val) => {
+        setQuery(val);
+    }
 
-//     const changeHandler = (val) => {
-//         setText(val);
-//     }
+    return (
+        <View>
+            <TextInput
+                style={styles.input}
+                placeholder='Search'
+                onChangeText={changeHandler}
+            />
+            <View style={styles.buttons}>
+                <View style={styles.buttonSearch}>
+                    <Button onPress={() => searchHandler(query)} title='Search' color='coral' />
+                </View>
+                <View style={styles.buttonClear}>
+                    <Button onPress={clearSearch} title='Clear' color='coral' />
+                </View>
+            </View>
+        </View>
+    )
 
-//     const [query, setQuery] = useState('');
-//     const [fullData, setFullData] = useState([]);
+    // return (
+    //     <View>
+    //         <TextInput
+    //             style={styles.input}
+    //             placeholder='Search'
+    //             onChangeText={(val) => handleSearch(val)}
+    //         />
+    //         <View style={styles.icons}>
+    //                     <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
+    //                         <MaterialCommunityIcons name="close" size={24} color="black" />
+    //                     </TouchableOpacity>
+    //                 </View>
+    //     </View>
+    // )
+}
 
-//     function renderHeader() {
-//         return (
-//             <View style={styles.input}>
-//                 <TextInput
-//                 autoCapitalize='none'
-//                 autoCorrect={false}
-//                 clearButtonMode="always"
-//                 value={query}
-//                 onChangeText={queryText => handleSearch(queryText)}
-//                 placeholder="Search"
-//                 style={styles.search}
-//                 />
-//             </View>
-//         )
-//     }
-
-//     return (
-//         <View>
-//             <TextInput
-//                 style={styles.input}
-//                 placeholder='Search for todo here'
-//                 onChangeText={changeHandler}
-//             />
-//             <Button onPress={() => searchHandler(text)} title='search' color='coral' />
-//         </View>
-//     )
-// }
-
-// const styles = StyleSheet.create({
-//     input: {
-//         // marginBottom: 10,
-//         // paddingHorizontal: 8,
-//         // paddingVertical: 6,
-//         // borderBottomWidth: 1,
-//         // borderBottomColor: '#ddd'
-//         backgroundColor: '#ffff',
-//         padding: 10,
-//         marginVertical: 10,
-//         borderRadius: 20
-//     },
-//     search: {
-//         backgroundColor: '#fff',
-//         paddingHorizontal: 20
-//     }
-// })
+const styles = StyleSheet.create({
+    input: {
+        marginBottom: 10,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd'
+    },
+    icons: {
+        flexDirection: 'row'
+    },
+    // search: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between'
+    // },
+    touchables: {
+        paddingLeft: 5
+    },
+    buttons: {
+        flexDirection: 'row'
+    },
+    buttonSearch: {
+        flex: 1,
+        marginRight: 2
+    },
+    buttonClear: {
+        flex: 1,
+        marginLeft: 2
+    }
+})

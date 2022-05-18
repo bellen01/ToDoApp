@@ -5,13 +5,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Header from '../components/header';
 import TodoItem from '../components/todoItem';
 import AddTodo from '../components/addTodo';
-import SearchTodo from '../components/search';
+import Search from '../components/search';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
 import filter from 'lodash.filter';
 import { TextInput } from 'react-native-gesture-handler';
 import { contains } from '@firebase/util';
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
+import { keyboardProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 
 
 const app = initializeApp(firebaseConfig);
@@ -91,38 +93,40 @@ export default function Home() {
 
 
 
-    function renderHeader() {
-        return (
-            <View
-                style={{
-                    backgroundColor: '#fff',
-                    padding: 10,
-                    marginVertical: 10,
-                    borderRadius: 20,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <TextInput
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    // clearButtonMode="always"
-                    value={query}
-                    onChangeText={queryText => handleSearch(queryText)}
-                    placeholder="Search"
-                    style={{
-                        backgroundColor: '#fff',
-                    }}
-                />
-                <View style={styles.icons}>
-                    <TouchableOpacity onPress={clearSearch} style={styles.touchables}>
-                        <MaterialCommunityIcons name="close" size={24} color="black" />
-                    </TouchableOpacity>
-                </View>
+    // function renderHeader() {
+    //     return (
+    //         <View
+    //             style={{
+    //                 backgroundColor: '#fff',
+    //                 padding: 10,
+    //                 marginVertical: 10,
+    //                 borderRadius: 20,
+    //                 flexDirection: 'row',
+    //                 justifyContent: 'space-between'
+    //             }}
+    //         >
+    //             <TextInput
+    //                 autoCapitalize='none'
+    //                 autoCorrect={false}
+    //                 // clearButtonMode="always"
+    //                 value={query}
+    //                 onChangeText={(val) => handleSearch(val)}
+    //                 placeholder="Search"
+    //                 style={{
+    //                     backgroundColor: '#fff',
+    //                 }}
+    //             />
+    //             <View style={styles.icons}>
+    //                 <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
+    //                     <MaterialCommunityIcons name="close" size={24} color="black" />
+    //                 </TouchableOpacity>
+    //             </View>
 
-            </View>
-        )
-    }
+    //         </View>
+    //     )
+    // }
+
+
 
     const clearSearch = () => {
         setQuery('');
@@ -132,11 +136,43 @@ export default function Home() {
     // search
     const handleSearch = (input) => {
         setQuery(input);
-        // const formattedQuery = input.toLowerCase();
-        // const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
-        // setToDos(searchResult);
+        const formattedQuery = input.toLowerCase();
+        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+        setToDos(searchResult);
+        Keyboard.dismiss()
     };
 
+
+
+
+    //renderHeader funktion som inte fungerar
+    // const changeHandler = (val) => {
+    //     setQuery(val);
+    // }
+
+    // function renderHeader() {
+    //     return (
+    //         <View
+    //             style={styles.search}
+    //         >
+    //             <TextInput
+    //                 style={styles.input}
+    //                 placeholder='Search'
+    //                 onChangeText={changeHandler}
+    //                 value={query}
+    //             />
+    //             <View style={styles.icons}>
+    //                 <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
+    //                     <MaterialCommunityIcons name="close" size={24} color="black" />
+    //                 </TouchableOpacity>
+    //                 <TouchableOpacity onPress={() => handleSearch(query)} style={styles.touchables} >
+    //                     <MaterialCommunityIcons name="magnify" size={24} color="black" />
+    //                 </TouchableOpacity>
+    //             </View>
+
+    //         </View>
+    //     )
+    // }
 
     // search
     // const handleSearch = (input) => {
@@ -182,9 +218,10 @@ export default function Home() {
                 <View style={styles.content}>
                     {/* <SearchTodo searchHandler={ } /> */}
                     <AddTodo submitHandler={addNewToDoHandler} />
+                    <Search searchHandler={handleSearch} clearSearch={clearSearch} />
                     <View style={styles.list}>
                         <FlatList
-                            ListHeaderComponent={renderHeader}
+                            // ListHeaderComponent={renderHeader}
                             keyExtractor={(item) => item.id}
                             data={toDos}
                             renderItem={({ item }) => (
@@ -213,5 +250,19 @@ const styles = StyleSheet.create({
     },
     touchables: {
         paddingLeft: 5
+    },
+    icons: {
+        flexDirection: 'row'
+    },
+    search: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    input: {
+        marginBottom: 10,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        // borderBottomWidth: 1,
+        // borderBottomColor: '#ddd'
     }
 });
