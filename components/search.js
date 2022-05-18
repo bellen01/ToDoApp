@@ -8,11 +8,18 @@ export default function Search({ searchHandler, clearSearch }) {
         setQuery(val);
     }
 
+    const onClear = () => {
+        clearSearch();
+        setQuery('');
+    }
+
     return (
         <View>
             <TextInput
                 style={styles.input}
                 placeholder='Search'
+                value={query}
+                // onChangeText={(val) => searchHandler(val)}
                 onChangeText={changeHandler}
             />
             <View style={styles.buttons}>
@@ -20,7 +27,7 @@ export default function Search({ searchHandler, clearSearch }) {
                     <Button onPress={() => searchHandler(query)} title='Search' color='coral' />
                 </View>
                 <View style={styles.buttonClear}>
-                    <Button onPress={clearSearch} title='Clear' color='coral' />
+                    <Button onPress={onClear} title='Clear' color='coral' />
                 </View>
             </View>
         </View>

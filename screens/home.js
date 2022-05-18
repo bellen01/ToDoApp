@@ -39,7 +39,7 @@ export default function Home() {
     const [toDos, setToDos] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
-    const [query, setQuery] = useState('');
+    // const [query, setQuery] = useState('');
     const [fullData, setFullData] = useState([]);
 
     useEffect(() => {
@@ -129,13 +129,11 @@ export default function Home() {
 
 
     const clearSearch = () => {
-        setQuery('');
         setToDos(fullData);
     }
 
     // search
     const handleSearch = (input) => {
-        setQuery(input);
         const formattedQuery = input.toLowerCase();
         const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
         setToDos(searchResult);
