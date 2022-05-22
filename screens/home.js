@@ -14,6 +14,9 @@ import { TextInput } from 'react-native-gesture-handler';
 import { contains } from '@firebase/util';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import { keyboardProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, clearTodo, setItems } from '../redux/allData';
+import { removeTodo } from '../redux/allData';
 
 
 const app = initializeApp(firebaseConfig);
@@ -36,19 +39,30 @@ const db = getFirestore(app);
 
 export default function Home() {
 
+    const allItems = useSelector((state) => state.toDo.item);
+    const dispatch = useDispatch();
+
+    console.log('sven', allItems);
+
+
+
+
     const [toDos, setToDos] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
     // const [query, setQuery] = useState('');
-    const [fullData, setFullData] = useState([]);
+    // const [fullData, setFullData] = useState([]);
 
     useEffect(() => {
         const getToDoItems = async () => {
+            //TODO: breakout getDocs and data
             const dataCol = await getDocs(todoCol);
             const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
             const toDoList = data.filter(doc => doc.status == 0)
             setToDos(toDoList);
-            setFullData(toDoList);
+            dispatch(setItems(data));
+            // setFullData(toDoList);
             // setToDos(data);
             // setFullData(data);
         }
@@ -60,7 +74,10 @@ export default function Home() {
         if (text.length > 3) {
             const newTodo = await addDoc(todoCol, { text: text, status: 0 });
             const doc = await getDoc(newTodo);
+            const docWithId = { ...doc.data(), id: doc.id };
+            //TODO: ändra nedan till allItems eller docWithId?
             setToDos([...toDos, { ...doc.data(), id: doc.id }])
+            dispatch(addTodo(docWithId));
             // console.log('ny', doc.data());
         } else {
             Alert.alert('Oops!', 'Todos must be over 3 chars long', [
@@ -70,11 +87,12 @@ export default function Home() {
     }
 
     const deleteHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id)
+        const todoDoc = doc(db, 'ToDos', id);
         await deleteDoc(todoDoc);
         setToDos((prevToDos) => {
             return prevToDos.filter(todo => todo.id != id)
-        })
+        });
+        //dispatch(removeTodo(id));
     }
 
     const inProgressHandler = async (id) => {
@@ -129,7 +147,7 @@ export default function Home() {
 
 
     const clearSearch = () => {
-        setToDos(fullData);
+        setToDos(allItems);
     }
 
     // search
