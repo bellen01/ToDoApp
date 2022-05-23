@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Header from '../components/header';
@@ -15,8 +15,9 @@ import { contains } from '@firebase/util';
 import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 import { keyboardProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, clearTodo, setItems } from '../redux/allData';
-import { removeTodo } from '../redux/allData';
+import { addTodo, clearTodo, setItems, removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
+import { useFocusEffect } from '@react-navigation/native';
+import { InteractionManager } from 'react-native';
 
 
 const app = initializeApp(firebaseConfig);
@@ -53,21 +54,47 @@ export default function Home() {
     // const [query, setQuery] = useState('');
     // const [fullData, setFullData] = useState([]);
 
-    useEffect(() => {
-        const getToDoItems = async () => {
-            //TODO: breakout getDocs and data
-            const dataCol = await getDocs(todoCol);
-            const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    useFocusEffect(
+        useCallback(() => {
+            const task = InteractionManager.runAfterInteractions(async () => {
+                const getToDoItems = async () => {
+                    //TODO: breakout getDocs and data
+                    const dataCol = await getDocs(todoCol);
+                    const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-            const toDoList = data.filter(doc => doc.status == 0)
-            setToDos(toDoList);
-            dispatch(setItems(data));
-            // setFullData(toDoList);
-            // setToDos(data);
-            // setFullData(data);
-        }
-        getToDoItems()
-    }, [])
+                    // const toDoList = allItems.filter(doc => doc.status == 0);
+                    const toDoList = data.filter(doc => doc.status == 0);
+                    setToDos(toDoList);
+                    dispatch(setItems(data));
+                    console.log('sven', allItems);
+                    // setFullData(toDoList);
+                    // setToDos(data);
+                    // setFullData(data);
+                };
+                getToDoItems();
+            });
+
+            return () => task.cancel();
+        }, [])
+    );
+
+
+    // useEffect(() => {
+    //     const getToDoItems = async () => {
+    //         //TODO: breakout getDocs and data
+    //         const dataCol = await getDocs(todoCol);
+    //         const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    //         const toDoList = data.filter(doc => doc.status == 0)
+    //         setToDos(toDoList);
+    //         dispatch(setItems(data));
+    //         console.log('sven');
+    //         // setFullData(toDoList);
+    //         // setToDos(data);
+    //         // setFullData(data);
+    //     }
+    //     getToDoItems()
+    // }, [])
 
 
     const addNewToDoHandler = async (text) => {
@@ -76,7 +103,7 @@ export default function Home() {
             const doc = await getDoc(newTodo);
             const docWithId = { ...doc.data(), id: doc.id };
             //TODO: ändra nedan till allItems eller docWithId?
-            setToDos([...toDos, { ...doc.data(), id: doc.id }])
+            setToDos([...toDos, docWithId]);
             dispatch(addTodo(docWithId));
             // console.log('ny', doc.data());
         } else {
@@ -92,20 +119,25 @@ export default function Home() {
         setToDos((prevToDos) => {
             return prevToDos.filter(todo => todo.id != id)
         });
-        //dispatch(removeTodo(id));
+        dispatch(removeTodo(id));
     }
 
     const inProgressHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id)
-        const newStatus = { status: 1 }
-        await updateDoc(todoDoc, newStatus)
+        const todoDoc = doc(db, 'ToDos', id);
+        const newStatus = { status: 1 };
+        await updateDoc(todoDoc, newStatus);
+        dispatch(moveToInprogress(id));
+        // const updatedId = 
+        // setInProgress((prevInProgress) => {
+        // }
         //console.log('done was clicked');
     }
 
     const doneHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id)
-        const newStatus = { status: 2 }
-        await updateDoc(todoDoc, newStatus)
+        const todoDoc = doc(db, 'ToDos', id);
+        const newStatus = { status: 2 };
+        await updateDoc(todoDoc, newStatus);
+        dispatch(moveToDone(id));
         //console.log('done was clicked');
     }
 

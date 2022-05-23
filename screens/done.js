@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Header from '../components/header';
 import TodoItem from '../components/todoItem';
@@ -11,26 +11,46 @@ import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addD
 import filter from 'lodash.filter';
 import { TextInput } from 'react-native-gesture-handler';
 import { contains } from '@firebase/util';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
 export default function Done() {
+    const allData = useSelector(state => state.toDo.item);
+
     const [done, setDone] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
-    useEffect(() => {
-        const getInProgressItems = async () => {
-            const dataCol = await getDocs(todoCol);
-            const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-            const doneList = data.filter(doc => doc.status == 2)
-            setDone(doneList);
-            // setDone(data);
-            // setFullData(data);
-        }
-        getInProgressItems()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            const getInProgressItems = async () => {
+                // const dataCol = await getDocs(todoCol);
+                // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                const doneList = allData.filter(doc => doc.status == 2)
+                setDone(doneList);
+                console.log('doneList', doneList);
+                // setDone(data);
+                // setFullData(data);
+            }
+            getInProgressItems()
+        }, [])
+    );
+
+    // useEffect(() => {
+    //     const getInProgressItems = async () => {
+    //         const dataCol = await getDocs(todoCol);
+    //         const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    //         const doneList = data.filter(doc => doc.status == 2)
+    //         setDone(doneList);
+    //         // setDone(data);
+    //         // setFullData(data);
+    //     }
+    //     getInProgressItems()
+    // }, [])
 
 
     return (

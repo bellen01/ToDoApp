@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const toDoSlice = createSlice({
     name: 'allData',
     initialState: {
@@ -17,6 +18,14 @@ const toDoSlice = createSlice({
         },
         clearTodo: (state, action) => {
             state.item = [];
+        },
+        moveToInprogress: (state, action) => {
+            const updatedToDo = state.item.find(todo => todo.id == action.payload);
+            updatedToDo.status = 1;
+        },
+        moveToDone: (state, action) => {
+            const done = state.item.find(todo => todo.id == action.payload);
+            done.status = 2;
         }
     }
 });
@@ -26,4 +35,6 @@ export const addTodo = toDoSlice.actions.addTodo;
 export const removeTodo = toDoSlice.actions.removeTodo;
 export const clearTodo = toDoSlice.actions.clearTodo;
 export const setItems = toDoSlice.actions.setItems;
+export const moveToInprogress = toDoSlice.actions.moveToInprogress;
+export const moveToDone = toDoSlice.actions.moveToDone;
 export default toDoSlice.reducer;

@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { useDispatch } from 'react-redux';
+import { setItems } from './redux/allData';
 
 //nytt från home
 // import { firebaseConfig } from './config';
@@ -42,6 +44,18 @@ export default function App() {
   // }, [])
 
   // console.log(toDos);
+
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const getToDoItems = async () => {
+  //     const dataCol = await getDocs(todoCol);
+  //     const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  //     dispatch(setItems(data));
+  //     console.log('björn');
+  //   }
+  //   getToDoItems();
+  // }, [])
 
 
   return (

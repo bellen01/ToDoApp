@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, Button } from 'react-native';
 import Header from '../components/header';
 import TodoItem from '../components/todoItem';
 import AddTodo from '../components/addTodo';
@@ -11,32 +11,70 @@ import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addD
 import filter from 'lodash.filter';
 import { TextInput } from 'react-native-gesture-handler';
 import { contains } from '@firebase/util';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { InteractionManager } from 'react-native';
+// import { setInProgress } from '../redux/inProgressSlice';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
 export default function InProgress() {
+
+    const allItems = useSelector((state) => state.toDo.item);
+    // const dispatch = useDispatch();
+    // const allInProgress = useSelector((state) => state.inProgress.inProgress);
+
+    console.log('allItems InProgress', allItems);
+    // console.log('allInProgress', allInProgress);
+
     const [inProgress, setInProgress] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
-    useEffect(() => {
-        const getInProgressItems = async () => {
-            const dataCol = await getDocs(todoCol);
-            const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-            const inProgressList = data.filter(doc => doc.status == 1)
-            setInProgress(inProgressList);
-            // setInProgress(data);
-            // setFullData(data);
-        }
-        getInProgressItems()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            const task = InteractionManager.runAfterInteractions(() => {
+                const inProgressList = allItems.filter(doc => doc.status == 1)
+                setInProgress(inProgressList);
+                console.log('inprogressList', inProgressList);
+            });
+
+            return () => task.cancel();
+        }, [allItems])
+    );
+
+    const blblb = () => {
+        const inProgressList = allItems.filter(doc => doc.status == 1)
+        setInProgress(inProgressList);
+        console.log('inprogressList', inProgressList);
+    }
+
+    // useEffect(() => {
+    //     const inProgressList = allItems.filter(doc => doc.status == 1)
+    //     setInProgress(inProgressList);
+    //     console.log('inprogressList', inProgressList);
+    //     // const getInProgressItems = async () => {
+    //     //     const dataCol = await getDocs(todoCol);
+    //     //     const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    //     //     const inProgressList = data.filter(doc => doc.status == 1)
+    //     //     // const inProgressList = allItems.filter(doc => doc.status == 1)
+    //     //     setInProgress(inProgressList);
+    //     //     // dispatch(setInProgress(inProgressList));
+    //     //     // setInProgress(data);
+    //     //     // setFullData(data);
+    //     // }
+    //     // getInProgressItems()
+    // }, [])
 
 
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
             <Header title="In progress" />
+            <View>
+                <Button onPress={blblb} title={'gör nåt'} />
+            </View>
             <View style={styles.content}>
                 <View style={styles.list}>
                     <FlatList
