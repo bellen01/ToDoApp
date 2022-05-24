@@ -37,7 +37,7 @@ export default function Done() {
                 // setFullData(data);
             }
             getInProgressItems()
-        }, [])
+        }, [allData])
     );
 
     // useEffect(() => {
@@ -64,7 +64,7 @@ export default function Done() {
                         keyExtractor={(item) => item.id}
                         data={done}
                         renderItem={({ item }) => (
-                            <TodoItem item={item} />
+                            <TodoItem item={item} toDos={done} setToDos={setDone} db={db} />
                         )}
                     />
                 </View>

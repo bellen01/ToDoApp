@@ -32,23 +32,33 @@ export default function InProgress() {
     const [inProgress, setInProgress] = useState([]);
     const todoCol = collection(db, 'ToDos');
 
-    useFocusEffect(
-        useCallback(() => {
-            const task = InteractionManager.runAfterInteractions(() => {
-                const inProgressList = allItems.filter(doc => doc.status == 1)
-                setInProgress(inProgressList);
-                console.log('inprogressList', inProgressList);
-            });
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         const task = InteractionManager.runAfterInteractions(() => {
+    //             const inProgressList = allItems.filter(doc => doc.status == 1)
+    //             setInProgress(inProgressList);
+    //             // console.log('inprogressList', inProgressList);
+    //             console.log('focus was triggered')
+    //         });
 
-            return () => task.cancel();
-        }, [allItems])
-    );
+    //         return () => task.cancel();
+    //     }, [allItems])
+    // );
 
-    const blblb = () => {
+    useEffect(() => {
         const inProgressList = allItems.filter(doc => doc.status == 1)
         setInProgress(inProgressList);
-        console.log('inprogressList', inProgressList);
-    }
+        // console.log('inprogressList', inProgressList);
+        console.log('focus was triggered')
+    }, [allItems]);
+
+    console.log('inProgressState', inProgress);
+
+    // const blblb = () => {
+    //     const inProgressList = allItems.filter(doc => doc.status == 1)
+    //     setInProgress(inProgressList);
+    //     console.log('inprogressList', inProgressList);
+    // }
 
     // useEffect(() => {
     //     const inProgressList = allItems.filter(doc => doc.status == 1)
@@ -72,9 +82,9 @@ export default function InProgress() {
         <View style={styles.container}>
             <StatusBar style="auto" />
             <Header title="In progress" />
-            <View>
+            {/* <View>
                 <Button onPress={blblb} title={'gör nåt'} />
-            </View>
+            </View> */}
             <View style={styles.content}>
                 <View style={styles.list}>
                     <FlatList
@@ -82,7 +92,7 @@ export default function InProgress() {
                         keyExtractor={(item) => item.id}
                         data={inProgress}
                         renderItem={({ item }) => (
-                            <TodoItem item={item} />
+                            <TodoItem item={item} toDos={inProgress} setToDos={setInProgress} db={db} />
                         )}
                     />
                 </View>

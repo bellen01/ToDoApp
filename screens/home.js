@@ -52,7 +52,7 @@ export default function Home() {
     const todoCol = collection(db, 'ToDos');
 
     // const [query, setQuery] = useState('');
-    // const [fullData, setFullData] = useState([]);
+    const [fullData, setFullData] = useState([]);
 
     useFocusEffect(
         useCallback(() => {
@@ -67,11 +67,13 @@ export default function Home() {
                     setToDos(toDoList);
                     dispatch(setItems(data));
                     console.log('sven', allItems);
-                    // setFullData(toDoList);
+                    setFullData(toDoList);
                     // setToDos(data);
                     // setFullData(data);
                 };
                 getToDoItems();
+                // const toDoList = allItems.filter(doc => doc.status == 0);
+                // setToDos(toDoList);
             });
 
             return () => task.cancel();
@@ -113,20 +115,21 @@ export default function Home() {
         }
     }
 
-    const deleteHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id);
-        await deleteDoc(todoDoc);
-        setToDos((prevToDos) => {
-            return prevToDos.filter(todo => todo.id != id)
-        });
-        dispatch(removeTodo(id));
-    }
+    // const deleteHandler = async (id) => {
+    //     const todoDoc = doc(db, 'ToDos', id);
+    //     await deleteDoc(todoDoc);
+    //     setToDos((prevToDos) => {
+    //         return prevToDos.filter(todo => todo.id != id)
+    //     });
+    //     dispatch(removeTodo(id));
+    // }
 
     const inProgressHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id);
         const newStatus = { status: 1 };
         await updateDoc(todoDoc, newStatus);
         dispatch(moveToInprogress(id));
+
         // const updatedId = 
         // setInProgress((prevInProgress) => {
         // }
@@ -179,7 +182,7 @@ export default function Home() {
 
 
     const clearSearch = () => {
-        setToDos(allItems);
+        setToDos(fullData);
     }
 
     // search
@@ -273,7 +276,7 @@ export default function Home() {
                             keyExtractor={(item) => item.id}
                             data={toDos}
                             renderItem={({ item }) => (
-                                <TodoItem item={item} deleteHandler={deleteHandler} inProgressHandler={inProgressHandler} doneHandler={doneHandler} />
+                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ inProgressHandler={inProgressHandler} doneHandler={doneHandler} toDos={toDos} setToDos={setToDos} db={db} />
                             )}
                         />
                     </View>
