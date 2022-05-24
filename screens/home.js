@@ -129,7 +129,8 @@ export default function Home() {
         const newStatus = { status: 1 };
         await updateDoc(todoDoc, newStatus);
         dispatch(moveToInprogress(id));
-
+        // const updatedDoc = setToDos.find(doc => doc.id == id);
+        // updatedDoc.status = 1;
         // const updatedId = 
         // setInProgress((prevInProgress) => {
         // }

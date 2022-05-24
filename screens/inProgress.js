@@ -39,6 +39,7 @@ export default function InProgress() {
     //             setInProgress(inProgressList);
     //             // console.log('inprogressList', inProgressList);
     //             console.log('focus was triggered')
+    //             console.log('allItems in focus', allItems);
     //         });
 
     //         return () => task.cancel();
@@ -46,10 +47,17 @@ export default function InProgress() {
     // );
 
     useEffect(() => {
+        // const getInProgressItems = async () => {
+        //     const dataCol = await getDocs(todoCol);
+        //     const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        //     const inProgressList = data.filter(doc => doc.status == 1)
         const inProgressList = allItems.filter(doc => doc.status == 1)
         setInProgress(inProgressList);
         // console.log('inprogressList', inProgressList);
         console.log('focus was triggered')
+        console.log('allItems in focus', allItems);
+        // }
+        // getInProgressItems()
     }, [allItems]);
 
     console.log('inProgressState', inProgress);

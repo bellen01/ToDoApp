@@ -14,7 +14,8 @@ const toDoSlice = createSlice({
             state.item.push(action.payload);
         },
         removeTodo: (state, action) => {
-            state.item = state.item.filter(todo => todo.id != action.payload.id);
+            state.item = state.item.filter(todo => todo.id != action.payload);
+            console.log('removeToDo', action.payload, state.item)
         },
         clearTodo: (state, action) => {
             state.item = [];

@@ -27,16 +27,19 @@ export default function Done() {
 
     useFocusEffect(
         useCallback(() => {
-            const getInProgressItems = async () => {
-                // const dataCol = await getDocs(todoCol);
-                // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-                const doneList = allData.filter(doc => doc.status == 2)
+            const getDoneItems = async () => {
+                //TODO This works with delete
+                const dataCol = await getDocs(todoCol);
+                const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                const doneList = data.filter(doc => doc.status == 2)
+                //TODO this don't work with delete
+                // const doneList = allData.filter(doc => doc.status == 2)
                 setDone(doneList);
                 console.log('doneList', doneList);
                 // setDone(data);
                 // setFullData(data);
             }
-            getInProgressItems()
+            getDoneItems()
         }, [allData])
     );
 

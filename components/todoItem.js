@@ -12,13 +12,13 @@ export default function TodoItem({ item, /*deleteHandler,*/ inProgressHandler, d
 
     const deleteHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id);
-        await deleteDoc(todoDoc);
+        dispatch(removeTodo(id));
         setToDos((prevToDos) => {
             return prevToDos.filter(todo => todo.id != id)
         });
-        dispatch(removeTodo(id));
+        await deleteDoc(todoDoc);
         console.log('delete was pressed');
-        console.log('setToDos in deleteHandler', setToDos);
+        // console.log('setToDos in deleteHandler', setToDos);
     }
 
     return (
