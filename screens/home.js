@@ -119,7 +119,7 @@ export default function Home() {
     // }, [])
 
 
-    const addNewToDoHandler = async (text) => {
+    const addNewToDoHandler = async (text, setText) => {
         if (text.length > 3) {
             const newTodo = await addDoc(todoCol, { text: text, status: 0 });
             const doc = await getDoc(newTodo);
@@ -127,6 +127,8 @@ export default function Home() {
             //TODO: ändra nedan till allItems eller docWithId?
             // setToDos([...toDos, docWithId]);
             dispatch(addTodo(docWithId));
+            Keyboard.dismiss();
+            setText('');
             // console.log('ny', doc.data());
         } else {
             Alert.alert('Oops!', 'Todos must be over 3 chars long', [
@@ -144,26 +146,26 @@ export default function Home() {
     //     dispatch(removeTodo(id));
     // }
 
-    const inProgressHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id);
-        const newStatus = { status: 1 };
-        await updateDoc(todoDoc, newStatus);
-        dispatch(moveToInprogress(id));
-        // const updatedDoc = setToDos.find(doc => doc.id == id);
-        // updatedDoc.status = 1;
-        // const updatedId = 
-        // setInProgress((prevInProgress) => {
-        // }
-        //console.log('done was clicked');
-    }
+    // const inProgressHandler = async (id) => {
+    //     const todoDoc = doc(db, 'ToDos', id);
+    //     const newStatus = { status: 1 };
+    //     await updateDoc(todoDoc, newStatus);
+    //     dispatch(moveToInprogress(id));
+    //     // const updatedDoc = setToDos.find(doc => doc.id == id);
+    //     // updatedDoc.status = 1;
+    //     // const updatedId = 
+    //     // setInProgress((prevInProgress) => {
+    //     // }
+    //     //console.log('done was clicked');
+    // }
 
-    const doneHandler = async (id) => {
-        const todoDoc = doc(db, 'ToDos', id);
-        const newStatus = { status: 2 };
-        await updateDoc(todoDoc, newStatus);
-        dispatch(moveToDone(id));
-        //console.log('done was clicked');
-    }
+    // const doneHandler = async (id) => {
+    //     const todoDoc = doc(db, 'ToDos', id);
+    //     const newStatus = { status: 2 };
+    //     await updateDoc(todoDoc, newStatus);
+    //     dispatch(moveToDone(id));
+    //     //console.log('done was clicked');
+    // }
 
 
 
@@ -204,6 +206,7 @@ export default function Home() {
 
     const clearSearch = () => {
         setToDos(fullData);
+        Keyboard.dismiss();
     }
 
     // search
@@ -297,7 +300,7 @@ export default function Home() {
                             keyExtractor={(item) => item.id}
                             data={toDos}
                             renderItem={({ item }) => (
-                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ inProgressHandler={inProgressHandler} doneHandler={doneHandler} toDos={toDos} setToDos={setToDos} db={db} />
+                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ /*inProgressHandler={inProgressHandler} doneHandler={doneHandler}*/ toDos={toDos} setToDos={setToDos} db={db} />
                             )}
                         />
                     </View>
