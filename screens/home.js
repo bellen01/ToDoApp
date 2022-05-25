@@ -54,31 +54,51 @@ export default function Home() {
     // const [query, setQuery] = useState('');
     const [fullData, setFullData] = useState([]);
 
-    useFocusEffect(
-        useCallback(() => {
-            const task = InteractionManager.runAfterInteractions(async () => {
-                const getToDoItems = async () => {
-                    //TODO: breakout getDocs and data
-                    const dataCol = await getDocs(todoCol);
-                    const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    useEffect(() => {
+        // const getToDoItems = async () => {
+        //TODO: breakout getDocs and data
+        // const dataCol = await getDocs(todoCol);
+        // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-                    // const toDoList = allItems.filter(doc => doc.status == 0);
-                    const toDoList = data.filter(doc => doc.status == 0);
-                    setToDos(toDoList);
-                    dispatch(setItems(data));
-                    console.log('sven', allItems);
-                    setFullData(toDoList);
-                    // setToDos(data);
-                    // setFullData(data);
-                };
-                getToDoItems();
-                // const toDoList = allItems.filter(doc => doc.status == 0);
-                // setToDos(toDoList);
-            });
+        const toDoList = allItems.filter(doc => doc.status == 0);
+        // const toDoList = data.filter(doc => doc.status == 0);
+        setToDos(toDoList);
+        // dispatch(setItems(data));
+        console.log('sven', allItems);
+        setFullData(toDoList);
+        // setToDos(data);
+        // setFullData(data);
+        // };
+        // getToDoItems();
+        // const toDoList = allItems.filter(doc => doc.status == 0);
+        // setToDos(toDoList);
+    }, [allItems]);
 
-            return () => task.cancel();
-        }, [])
-    );
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         const task = InteractionManager.runAfterInteractions(async () => {
+    //             // const getToDoItems = async () => {
+    //             //TODO: breakout getDocs and data
+    //             // const dataCol = await getDocs(todoCol);
+    //             // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+    //             const toDoList = allItems.filter(doc => doc.status == 0);
+    //             // const toDoList = data.filter(doc => doc.status == 0);
+    //             setToDos(toDoList);
+    //             // dispatch(setItems(data));
+    //             console.log('sven', allItems);
+    //             setFullData(toDoList);
+    //             // setToDos(data);
+    //             // setFullData(data);
+    //             // };
+    //             // getToDoItems();
+    //             // const toDoList = allItems.filter(doc => doc.status == 0);
+    //             // setToDos(toDoList);
+    //         });
+
+    //         return () => task.cancel();
+    //     }, [allItems])
+    // );
 
 
     // useEffect(() => {
@@ -105,7 +125,7 @@ export default function Home() {
             const doc = await getDoc(newTodo);
             const docWithId = { ...doc.data(), id: doc.id };
             //TODO: ändra nedan till allItems eller docWithId?
-            setToDos([...toDos, docWithId]);
+            // setToDos([...toDos, docWithId]);
             dispatch(addTodo(docWithId));
             // console.log('ny', doc.data());
         } else {

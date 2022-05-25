@@ -2,23 +2,44 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import { doc, deleteDoc } from 'firebase/firestore/lite';
-import { removeTodo } from '../redux/allData';
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
+import { removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
 // import Header from './components/header';
 
-export default function TodoItem({ item, /*deleteHandler,*/ inProgressHandler, doneHandler, toDos, setToDos, db }) {
+export default function TodoItem({ item, /*deleteHandler,*/ /*inProgressHandler,*/ /*doneHandler,*/ toDos, setToDos, db }) {
 
     const dispatch = useDispatch();
 
     const deleteHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id);
         dispatch(removeTodo(id));
-        setToDos((prevToDos) => {
-            return prevToDos.filter(todo => todo.id != id)
-        });
+        // setToDos((prevToDos) => {
+        //     return prevToDos.filter(todo => todo.id != id)
+        // });
         await deleteDoc(todoDoc);
         console.log('delete was pressed');
         // console.log('setToDos in deleteHandler', setToDos);
+    }
+
+    const inProgressHandler = async (id) => {
+        const todoDoc = doc(db, 'ToDos', id);
+        const newStatus = { status: 1 };
+        await updateDoc(todoDoc, newStatus);
+        dispatch(moveToInprogress(id));
+        // const updatedDoc = setToDos.find(doc => doc.id == id);
+        // updatedDoc.status = 1;
+        // const updatedId = 
+        // setInProgress((prevInProgress) => {
+        // }
+        //console.log('done was clicked');
+    }
+
+    const doneHandler = async (id) => {
+        const todoDoc = doc(db, 'ToDos', id);
+        const newStatus = { status: 2 };
+        await updateDoc(todoDoc, newStatus);
+        dispatch(moveToDone(id));
+        //console.log('done was clicked');
     }
 
     return (

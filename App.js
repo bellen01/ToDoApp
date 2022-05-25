@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { useDispatch } from 'react-redux';
 import { setItems } from './redux/allData';
+import { fetchToDos } from './redux/allData';
 
 //nytt från home
 // import { firebaseConfig } from './config';
@@ -23,6 +24,10 @@ const Tab = createMaterialTopTabNavigator();
 
 
 export default function App() {
+
+
+  store.dispatch(fetchToDos());
+  console.log('fetchDone');
 
   // const [toDos, setToDos] = useState([]);
   // const todoCol = collection(db, 'ToDos');
