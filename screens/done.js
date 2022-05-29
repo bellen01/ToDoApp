@@ -13,6 +13,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { contains } from '@firebase/util';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import List from '../components/list';
 
 
 const app = initializeApp(firebaseConfig);
@@ -61,7 +62,8 @@ export default function Done() {
             <StatusBar style="auto" />
             <Header title="Done" />
             <View style={styles.content}>
-                <View style={styles.list}>
+                <List toDos={done} setToDos={setDone} db={db} />
+                {/* <View style={styles.list}>
                     <FlatList
                         // ListHeaderComponent={renderHeader}
                         keyExtractor={(item) => item.id}
@@ -70,7 +72,7 @@ export default function Done() {
                             <TodoItem item={item} toDos={done} setToDos={setDone} db={db} />
                         )}
                     />
-                </View>
+                </View> */}
             </View>
         </View>
     );

@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, clearTodo, setItems, removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
 import { useFocusEffect } from '@react-navigation/native';
 import { InteractionManager } from 'react-native';
+import List from '../components/list';
 
 
 const app = initializeApp(firebaseConfig);
@@ -294,19 +295,20 @@ export default function Home() {
                     {/* <SearchTodo searchHandler={ } /> */}
                     <AddTodo submitHandler={addNewToDoHandler} />
                     <Search /*searchHandler={handleSearch} clearSearch={clearSearch}*/ setToDos={setToDos} fullData={fullData} toDos={toDos} />
-                    <View style={styles.list}>
+                    <List toDos={toDos} setToDos={setToDos} db={db} />
+                    {/* <View style={styles.list}>
                         <FlatList
                             // ListHeaderComponent={renderHeader}
                             keyExtractor={(item) => item.id}
                             data={toDos}
                             renderItem={({ item }) => (
-                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ /*inProgressHandler={inProgressHandler} doneHandler={doneHandler}*/ toDos={toDos} setToDos={setToDos} db={db} />
+                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ /*inProgressHandler={inProgressHandler} doneHandler={doneHandler}*/ /* toDos={toDos} setToDos={setToDos} db={db} />
                             )}
                         />
-                    </View>
+                            </View>*/}
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback >
     );
 }
 

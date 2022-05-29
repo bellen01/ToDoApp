@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { InteractionManager } from 'react-native';
 // import { setInProgress } from '../redux/inProgressSlice';
+import List from '../components/list';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -62,11 +63,6 @@ export default function InProgress() {
 
     console.log('inProgressState', inProgress);
 
-    // const blblb = () => {
-    //     const inProgressList = allItems.filter(doc => doc.status == 1)
-    //     setInProgress(inProgressList);
-    //     console.log('inprogressList', inProgressList);
-    // }
 
     // useEffect(() => {
     //     const inProgressList = allItems.filter(doc => doc.status == 1)
@@ -90,11 +86,9 @@ export default function InProgress() {
         <View style={styles.container}>
             <StatusBar style="auto" />
             <Header title="In progress" />
-            {/* <View>
-                <Button onPress={blblb} title={'gör nåt'} />
-            </View> */}
             <View style={styles.content}>
-                <View style={styles.list}>
+                <List toDos={inProgress} setToDos={setInProgress} db={db} />
+                {/* <View style={styles.list}>
                     <FlatList
                         // ListHeaderComponent={renderHeader}
                         keyExtractor={(item) => item.id}
@@ -103,7 +97,7 @@ export default function InProgress() {
                             <TodoItem item={item} toDos={inProgress} setToDos={setInProgress} db={db} />
                         )}
                     />
-                </View>
+                </View> */}
             </View>
         </View>
     );
