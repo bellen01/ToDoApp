@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Keyboard } from 'react-native';
 
-export default function Search({ searchHandler, clearSearch }) {
+export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos, fullData }) {
     const [query, setQuery] = useState('');
 
     const changeHandler = (val) => {
@@ -12,6 +12,19 @@ export default function Search({ searchHandler, clearSearch }) {
         clearSearch();
         setQuery('');
     }
+
+    const clearSearch = () => {
+        setToDos(fullData);
+        Keyboard.dismiss();
+    }
+
+    // search
+    const handleSearch = (input) => {
+        const formattedQuery = input.toLowerCase();
+        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+        setToDos(searchResult);
+        Keyboard.dismiss()
+    };
 
     return (
         <View>
@@ -24,7 +37,7 @@ export default function Search({ searchHandler, clearSearch }) {
             />
             <View style={styles.buttons}>
                 <View style={styles.buttonSearch}>
-                    <Button onPress={() => searchHandler(query)} title='Search' color='coral' />
+                    <Button onPress={() => handleSearch(query)} title='Search' color='coral' />
                 </View>
                 <View style={styles.buttonClear}>
                     <Button onPress={onClear} title='Clear' color='coral' />

@@ -203,19 +203,19 @@ export default function Home() {
     // }
 
 
+    //Flyttat till search
+    // const clearSearch = () => {
+    //     setToDos(fullData);
+    //     Keyboard.dismiss();
+    // }
 
-    const clearSearch = () => {
-        setToDos(fullData);
-        Keyboard.dismiss();
-    }
-
-    // search
-    const handleSearch = (input) => {
-        const formattedQuery = input.toLowerCase();
-        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
-        setToDos(searchResult);
-        Keyboard.dismiss()
-    };
+    // // search
+    // const handleSearch = (input) => {
+    //     const formattedQuery = input.toLowerCase();
+    //     const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+    //     setToDos(searchResult);
+    //     Keyboard.dismiss()
+    // };
 
 
 
@@ -293,7 +293,7 @@ export default function Home() {
                 <View style={styles.content}>
                     {/* <SearchTodo searchHandler={ } /> */}
                     <AddTodo submitHandler={addNewToDoHandler} />
-                    <Search searchHandler={handleSearch} clearSearch={clearSearch} />
+                    <Search /*searchHandler={handleSearch} clearSearch={clearSearch}*/ setToDos={setToDos} fullData={fullData} toDos={toDos} />
                     <View style={styles.list}>
                         <FlatList
                             // ListHeaderComponent={renderHeader}
