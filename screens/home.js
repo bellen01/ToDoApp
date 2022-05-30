@@ -37,6 +37,7 @@ export default function Home() {
 
     const addNewToDoHandler = async (text, setText) => {
         const input = text.trim();
+
         if (regEx.test(input) === false) {
             Alert.alert('Sorry', 'you can not add todos with special characters.', [
                 { text: 'Understood', onPress: () => console.log('alert closed') }
@@ -64,9 +65,19 @@ export default function Home() {
                 <StatusBar style="auto" />
                 <Header title="To Do's" />
                 <View style={styles.content}>
-                    <AddTodo submitHandler={addNewToDoHandler} />
-                    <Search setToDos={setToDos} fullData={fullData} toDos={toDos} />
-                    <List toDos={toDos} setToDos={setToDos} db={db} />
+                    <AddTodo
+                        submitHandler={addNewToDoHandler}
+                    />
+                    <Search
+                        setToDos={setToDos}
+                        fullData={fullData}
+                        toDos={toDos}
+                    />
+                    <List
+                        toDos={toDos}
+                        setToDos={setToDos}
+                        db={db}
+                    />
                 </View>
             </View>
         </TouchableWithoutFeedback >
@@ -81,24 +92,5 @@ const styles = StyleSheet.create({
     content: {
         padding: 40,
         flex: 1,
-    },
-    list: {
-        marginTop: 20,
-        flex: 1,
-    },
-    touchables: {
-        paddingLeft: 5
-    },
-    icons: {
-        flexDirection: 'row'
-    },
-    search: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    input: {
-        marginBottom: 10,
-        paddingHorizontal: 8,
-        paddingVertical: 6,
     }
 });
