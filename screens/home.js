@@ -1,23 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import Header from '../components/header';
-import TodoItem from '../components/todoItem';
+//import TodoItem from '../components/todoItem';
 import AddTodo from '../components/addTodo';
 import Search from '../components/search';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
-import filter from 'lodash.filter';
-import { TextInput } from 'react-native-gesture-handler';
-import { contains } from '@firebase/util';
-import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
-import { keyboardProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
+import { getFirestore, collection, getDoc, addDoc } from 'firebase/firestore/lite';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, clearTodo, setItems, removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
-import { useFocusEffect } from '@react-navigation/native';
-import { InteractionManager } from 'react-native';
+import { addTodo } from '../redux/allData';
 import List from '../components/list';
 
 
@@ -31,76 +23,18 @@ export default function Home() {
     const dispatch = useDispatch();
 
     const [toDos, setToDos] = useState([]);
-    const todoCol = collection(db, 'ToDos');
-
-    // const [query, setQuery] = useState('');
     const [fullData, setFullData] = useState([]);
 
-    useEffect(() => {
-        // const getToDoItems = async () => {
-        //TODO: breakout getDocs and data
-        // const dataCol = await getDocs(todoCol);
-        // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const todoCol = collection(db, 'ToDos');
+    const regEx = /^[^!-\/:-@\[-`{-~]+$/;
 
+
+    useEffect(() => {
         const toDoList = allItems.filter(doc => doc.status == 0);
-        // const toDoList = data.filter(doc => doc.status == 0);
         setToDos(toDoList);
-        // dispatch(setItems(data));
-        console.log('sven', allItems);
         setFullData(toDoList);
-        // setToDos(data);
-        // setFullData(data);
-        // };
-        // getToDoItems();
-        // const toDoList = allItems.filter(doc => doc.status == 0);
-        // setToDos(toDoList);
     }, [allItems]);
 
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         const task = InteractionManager.runAfterInteractions(async () => {
-    //             // const getToDoItems = async () => {
-    //             //TODO: breakout getDocs and data
-    //             // const dataCol = await getDocs(todoCol);
-    //             // const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-
-    //             const toDoList = allItems.filter(doc => doc.status == 0);
-    //             // const toDoList = data.filter(doc => doc.status == 0);
-    //             setToDos(toDoList);
-    //             // dispatch(setItems(data));
-    //             console.log('sven', allItems);
-    //             setFullData(toDoList);
-    //             // setToDos(data);
-    //             // setFullData(data);
-    //             // };
-    //             // getToDoItems();
-    //             // const toDoList = allItems.filter(doc => doc.status == 0);
-    //             // setToDos(toDoList);
-    //         });
-
-    //         return () => task.cancel();
-    //     }, [allItems])
-    // );
-
-
-    // useEffect(() => {
-    //     const getToDoItems = async () => {
-    //         //TODO: breakout getDocs and data
-    //         const dataCol = await getDocs(todoCol);
-    //         const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-
-    //         const toDoList = data.filter(doc => doc.status == 0)
-    //         setToDos(toDoList);
-    //         dispatch(setItems(data));
-    //         console.log('sven');
-    //         // setFullData(toDoList);
-    //         // setToDos(data);
-    //         // setFullData(data);
-    //     }
-    //     getToDoItems()
-    // }, [])
-
-    const regEx = /^[^!-\/:-@\[-`{-~]+$/;
 
     const addNewToDoHandler = async (text, setText) => {
         if (regEx.test(text) === false) {
@@ -176,7 +110,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 8,
         paddingVertical: 6,
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#ddd'
     }
 });

@@ -13,7 +13,6 @@ export default function TodoItem({ item, toDos, setToDos, db }) {
         const todoDoc = doc(db, 'ToDos', id);
         dispatch(removeTodo(id));
         await deleteDoc(todoDoc);
-        console.log('delete was pressed');
     }
 
     const inProgressHandler = async (id) => {

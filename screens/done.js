@@ -1,18 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, /*FlatList, Alert, TouchableWithoutFeedback, Keyboard*/ } from 'react-native';
 import Header from '../components/header';
-import TodoItem from '../components/todoItem';
-import AddTodo from '../components/addTodo';
-import SearchTodo from '../components/search';
+//import TodoItem from '../components/todoItem';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, getDoc, DocumentReference, doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore/lite';
-import filter from 'lodash.filter';
-import { TextInput } from 'react-native-gesture-handler';
-import { contains } from '@firebase/util';
-import { useFocusEffect } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { getFirestore } from 'firebase/firestore/lite';
+import { useSelector } from 'react-redux';
 import List from '../components/list';
 
 
@@ -21,40 +15,14 @@ const db = getFirestore(app);
 
 
 export default function Done() {
+
     const allData = useSelector(state => state.toDo.item);
-
     const [done, setDone] = useState([]);
-    const todoCol = collection(db, 'ToDos');
 
-    useFocusEffect(
-        useCallback(() => {
-            const getDoneItems = async () => {
-                //TODO This works with delete
-                const dataCol = await getDocs(todoCol);
-                const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-                const doneList = data.filter(doc => doc.status == 2)
-                //TODO this don't work with delete
-                // const doneList = allData.filter(doc => doc.status == 2)
-                setDone(doneList);
-                console.log('doneList', doneList);
-                // setDone(data);
-                // setFullData(data);
-            }
-            getDoneItems()
-        }, [allData])
-    );
-
-    // useEffect(() => {
-    //     const getInProgressItems = async () => {
-    //         const dataCol = await getDocs(todoCol);
-    //         const data = dataCol.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    //         const doneList = data.filter(doc => doc.status == 2)
-    //         setDone(doneList);
-    //         // setDone(data);
-    //         // setFullData(data);
-    //     }
-    //     getInProgressItems()
-    // }, [])
+    useEffect(() => {
+        const doneList = allData.filter(doc => doc.status == 2)
+        setDone(doneList);
+    }, [allData]);
 
 
     return (
