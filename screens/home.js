@@ -119,9 +119,19 @@ export default function Home() {
     //     getToDoItems()
     // }, [])
 
+    const regEx = /^[^!-\/:-@\[-`{-~]+$/;
+    // const regEx = /^[^a]+$/;
 
     const addNewToDoHandler = async (text, setText) => {
-        if (text.length > 3) {
+        console.log(text);
+        // const input = text.toString();
+        console.log('fel')
+        if (regEx.test(text) === false) {
+            console.log('hit kommer vi');
+            Alert.alert('Sorry', 'you can not add todos with special characters.', [
+                { text: 'Understood', onPress: () => console.log('alert closed') }
+            ])
+        } else if (text.length > 3) {
             const newTodo = await addDoc(todoCol, { text: text, status: 0 });
             const doc = await getDoc(newTodo);
             const docWithId = { ...doc.data(), id: doc.id };
