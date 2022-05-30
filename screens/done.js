@@ -15,13 +15,13 @@ const db = getFirestore(app);
 
 export default function Done() {
 
-    const allData = useSelector(state => state.toDo.item);
+    const allItems = useSelector(state => state.toDo.item);
     const [done, setDone] = useState([]);
 
     useEffect(() => {
-        const doneList = allData.filter(doc => doc.status == 2)
+        const doneList = allItems.filter(doc => doc.status == 2)
         setDone(doneList);
-    }, [allData]);
+    }, [allItems]);
 
 
     return (
@@ -29,7 +29,11 @@ export default function Done() {
             <StatusBar style="auto" />
             <Header title="Done" />
             <View style={styles.content}>
-                <List toDos={done} setToDos={setDone} db={db} />
+                <List
+                    toDos={done}
+                    setToDos={setDone}
+                    db={db}
+                />
             </View>
         </View>
     );
@@ -42,10 +46,6 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 40,
-        flex: 1,
-    },
-    list: {
-        marginTop: 20,
         flex: 1,
     }
 });

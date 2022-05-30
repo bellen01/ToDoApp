@@ -14,3 +14,4 @@ config/
 
 # macOS
 .DS_Store
+config.bat

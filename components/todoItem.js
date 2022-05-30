@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { removeItem, moveToInprogress, moveToDone } from '../redux/allData';
 
-export default function TodoItem({ item, toDos, setToDos, db }) {
+export default function TodoItem({ item, db }) {
 
     const dispatch = useDispatch();
 

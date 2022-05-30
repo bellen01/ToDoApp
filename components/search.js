@@ -38,10 +38,18 @@ export default function Search({ setToDos, fullData }) {
             />
             <View style={styles.buttons}>
                 <View style={styles.buttonSearch}>
-                    <Button onPress={() => handleSearch(query)} title='Search' color='coral' />
+                    <Button
+                        onPress={() => handleSearch(query)}
+                        title='Search'
+                        color='coral'
+                    />
                 </View>
                 <View style={styles.buttonClear}>
-                    <Button onPress={onClear} title='Clear' color='coral' />
+                    <Button
+                        onPress={onClear}
+                        title='Clear'
+                        color='coral'
+                    />
                 </View>
             </View>
         </View>
@@ -55,12 +63,6 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd'
-    },
-    icons: {
-        flexDirection: 'row'
-    },
-    touchables: {
-        paddingLeft: 5
     },
     buttons: {
         flexDirection: 'row'

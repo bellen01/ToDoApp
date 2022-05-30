@@ -6,7 +6,6 @@ import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
 import { useSelector } from 'react-redux';
-
 import List from '../components/list';
 
 const app = initializeApp(firebaseConfig);
@@ -46,10 +45,6 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 40,
-        flex: 1,
-    },
-    list: {
-        marginTop: 20,
         flex: 1,
     }
 });
