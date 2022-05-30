@@ -24,6 +24,7 @@ export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos,
         const formattedQuery = inputWithoutSpecialCharacters.toLowerCase();
         const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
         setToDos(searchResult);
+        setQuery(formattedQuery);
         Keyboard.dismiss()
         console.log('input utan ändring', input);
         console.log('input utan specialtecken', inputWithoutSpecialCharacters);
