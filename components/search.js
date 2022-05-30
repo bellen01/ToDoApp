@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Button, Keyboard } from 'react-native';
 
-export default function Search({ toDos, setToDos, fullData }) {
+export default function Search({ setToDos, fullData }) {
     const [query, setQuery] = useState('');
 
     const changeHandler = (val) => {

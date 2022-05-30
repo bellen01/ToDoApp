@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Header from '../components/header';
-//import TodoItem from '../components/todoItem';
 import AddTodo from '../components/addTodo';
 import Search from '../components/search';
 import { firebaseConfig } from '../config';
@@ -68,16 +67,6 @@ export default function Home() {
                     <AddTodo submitHandler={addNewToDoHandler} />
                     <Search setToDos={setToDos} fullData={fullData} toDos={toDos} />
                     <List toDos={toDos} setToDos={setToDos} db={db} />
-                    {/* <View style={styles.list}>
-                        <FlatList
-                            // ListHeaderComponent={renderHeader}
-                            keyExtractor={(item) => item.id}
-                            data={toDos}
-                            renderItem={({ item }) => (
-                                <TodoItem item={item} /* deleteHandler={deleteHandler} */ /*inProgressHandler={inProgressHandler} doneHandler={doneHandler}*/ /* toDos={toDos} setToDos={setToDos} db={db} />
-                            )}
-                        />
-                            </View>*/}
                 </View>
             </View>
         </TouchableWithoutFeedback >

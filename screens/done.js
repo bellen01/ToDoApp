@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, /*FlatList, Alert, TouchableWithoutFeedback, Keyboard*/ } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Header from '../components/header';
-//import TodoItem from '../components/todoItem';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
@@ -31,16 +30,6 @@ export default function Done() {
             <Header title="Done" />
             <View style={styles.content}>
                 <List toDos={done} setToDos={setDone} db={db} />
-                {/* <View style={styles.list}>
-                    <FlatList
-                        // ListHeaderComponent={renderHeader}
-                        keyExtractor={(item) => item.id}
-                        data={done}
-                        renderItem={({ item }) => (
-                            <TodoItem item={item} toDos={done} setToDos={setDone} db={db} />
-                        )}
-                    />
-                </View> */}
             </View>
         </View>
     );

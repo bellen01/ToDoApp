@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, /*FlatList, Alert, TouchableWithoutFeedback, Keyboard, Button*/ } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Header from '../components/header';
-//import TodoItem from '../components/todoItem';
 import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
@@ -30,17 +29,11 @@ export default function InProgress() {
             <StatusBar style="auto" />
             <Header title="In progress" />
             <View style={styles.content}>
-                <List toDos={inProgress} setToDos={setInProgress} db={db} />
-                {/* <View style={styles.list}>
-                    <FlatList
-                        // ListHeaderComponent={renderHeader}
-                        keyExtractor={(item) => item.id}
-                        data={inProgress}
-                        renderItem={({ item }) => (
-                            <TodoItem item={item} toDos={inProgress} setToDos={setInProgress} db={db} />
-                        )}
-                    />
-                </View> */}
+                <List
+                    toDos={inProgress}
+                    setToDos={setInProgress}
+                    db={db}
+                />
             </View>
         </View>
     );

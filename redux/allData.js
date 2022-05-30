@@ -46,7 +46,6 @@ const toDoSlice = createSlice({
     }
 });
 
-//TODO: döp om addTodo osv till addItem?
 export const addItem = toDoSlice.actions.addItem;
 export const removeItem = toDoSlice.actions.removeItem;
 export const setItems = toDoSlice.actions.setItems;
