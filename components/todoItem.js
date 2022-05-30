@@ -6,19 +6,15 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
 // import Header from './components/header';
 
-export default function TodoItem({ item, /*deleteHandler,*/ /*inProgressHandler,*/ /*doneHandler,*/ toDos, setToDos, db }) {
+export default function TodoItem({ item, toDos, setToDos, db }) {
 
     const dispatch = useDispatch();
 
     const deleteHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id);
         dispatch(removeTodo(id));
-        // setToDos((prevToDos) => {
-        //     return prevToDos.filter(todo => todo.id != id)
-        // });
         await deleteDoc(todoDoc);
         console.log('delete was pressed');
-        // console.log('setToDos in deleteHandler', setToDos);
     }
 
     const inProgressHandler = async (id) => {
@@ -26,12 +22,6 @@ export default function TodoItem({ item, /*deleteHandler,*/ /*inProgressHandler,
         const newStatus = { status: 1 };
         await updateDoc(todoDoc, newStatus);
         dispatch(moveToInprogress(id));
-        // const updatedDoc = setToDos.find(doc => doc.id == id);
-        // updatedDoc.status = 1;
-        // const updatedId = 
-        // setInProgress((prevInProgress) => {
-        // }
-        //console.log('done was clicked');
     }
 
     const doneHandler = async (id) => {
@@ -39,8 +29,15 @@ export default function TodoItem({ item, /*deleteHandler,*/ /*inProgressHandler,
         const newStatus = { status: 2 };
         await updateDoc(todoDoc, newStatus);
         dispatch(moveToDone(id));
-        //console.log('done was clicked');
     }
+
+    const showInProgressButton = item.status == 1 ? <></> : <TouchableOpacity onPress={() => inProgressHandler(item.id)} style={styles.touchables} >
+        <MaterialCommunityIcons name="progress-clock" size={20} color="black" />
+    </TouchableOpacity>;
+
+    const showDoneButton = item.status == 2 ? <></> : <TouchableOpacity onPress={() => doneHandler(item.id)} style={styles.touchables} >
+        <MaterialCommunityIcons name="check" size={20} color="black" />
+    </TouchableOpacity>;
 
     return (
         <View style={styles.item}>
@@ -49,12 +46,8 @@ export default function TodoItem({ item, /*deleteHandler,*/ /*inProgressHandler,
                 <TouchableOpacity onPress={() => deleteHandler(item.id)} style={styles.touchables} >
                     <MaterialCommunityIcons name="delete" size={20} color="#333" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => inProgressHandler(item.id)} style={styles.touchables} >
-                    <MaterialCommunityIcons name="progress-clock" size={20} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => doneHandler(item.id)} style={styles.touchables} >
-                    <MaterialCommunityIcons name="check" size={20} color="black" />
-                </TouchableOpacity>
+                {showInProgressButton}
+                {showDoneButton}
             </View>
         </View>
     )
