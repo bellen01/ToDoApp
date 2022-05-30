@@ -9,7 +9,7 @@ import { firebaseConfig } from '../config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDoc, addDoc } from 'firebase/firestore/lite';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo } from '../redux/allData';
+import { addItem } from '../redux/allData';
 import List from '../components/list';
 
 
@@ -26,7 +26,7 @@ export default function Home() {
     const [fullData, setFullData] = useState([]);
 
     const todoCol = collection(db, 'ToDos');
-    const regEx = /^[^!-\/:-@\[-`{-~]+$/;
+    const regEx = /^[^!-\/:-@\[-`{-~]*$/;
 
 
     useEffect(() => {
@@ -37,19 +37,20 @@ export default function Home() {
 
 
     const addNewToDoHandler = async (text, setText) => {
-        if (regEx.test(text) === false) {
+        const input = text.trim();
+        if (regEx.test(input) === false) {
             Alert.alert('Sorry', 'you can not add todos with special characters.', [
                 { text: 'Understood', onPress: () => console.log('alert closed') }
             ])
-        } else if (text.length > 3) {
-            const newTodo = await addDoc(todoCol, { text: text, status: 0 });
+        } else if (input.length > 2) {
+            const newTodo = await addDoc(todoCol, { text: input, status: 0 });
             const doc = await getDoc(newTodo);
             const docWithId = { ...doc.data(), id: doc.id };
-            dispatch(addTodo(docWithId));
+            dispatch(addItem(docWithId));
             Keyboard.dismiss();
             setText('');
         } else {
-            Alert.alert('Oops!', 'Todos must be over 3 chars long', [
+            Alert.alert('Oops!', 'Todos must be over 2 chars long', [
                 { text: 'Understood', onPress: () => console.log('alert closed') }
             ])
         }

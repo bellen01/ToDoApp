@@ -18,10 +18,11 @@ export default function Search({ toDos, setToDos, fullData }) {
         Keyboard.dismiss();
     }
 
-    const handleSearch = (input) => {
+    const handleSearch = (query) => {
+        const input = query.trim();
         const inputWithoutSpecialCharacters = input.replace(/[^a-zA-Z0-9 ]/g, '');
         const formattedQuery = inputWithoutSpecialCharacters.toLowerCase();
-        const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
+        const searchResult = fullData.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
         setToDos(searchResult);
         setQuery(formattedQuery);
         Keyboard.dismiss()

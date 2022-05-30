@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
-import { removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
+import { removeItem, moveToInprogress, moveToDone } from '../redux/allData';
 
 export default function TodoItem({ item, toDos, setToDos, db }) {
 
@@ -11,7 +11,7 @@ export default function TodoItem({ item, toDos, setToDos, db }) {
 
     const deleteHandler = async (id) => {
         const todoDoc = doc(db, 'ToDos', id);
-        dispatch(removeTodo(id));
+        dispatch(removeItem(id));
         await deleteDoc(todoDoc);
     }
 
@@ -60,15 +60,16 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed',
         borderRadius: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     itemText: {
         marginLeft: 10,
+        flexShrink: 1
     },
     icons: {
         flexDirection: 'row'
     },
     touchables: {
-        paddingLeft: 5
+        paddingLeft: 10
     }
 })

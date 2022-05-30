@@ -24,12 +24,11 @@ const toDoSlice = createSlice({
         setItems: (state, action) => {
             state.item = action.payload;
         },
-        addTodo: (state, action) => {
+        addItem: (state, action) => {
             state.item.push(action.payload);
         },
-        removeTodo: (state, action) => {
+        removeItem: (state, action) => {
             state.item = state.item.filter(todo => todo.id != action.payload);
-            console.log('removeToDo', action.payload, state.item)
         },
         moveToInprogress: (state, action) => {
             const updatedToDo = state.item.find(todo => todo.id == action.payload);
@@ -48,8 +47,8 @@ const toDoSlice = createSlice({
 });
 
 //TODO: döp om addTodo osv till addItem?
-export const addTodo = toDoSlice.actions.addTodo;
-export const removeTodo = toDoSlice.actions.removeTodo;
+export const addItem = toDoSlice.actions.addItem;
+export const removeItem = toDoSlice.actions.removeItem;
 export const setItems = toDoSlice.actions.setItems;
 export const moveToInprogress = toDoSlice.actions.moveToInprogress;
 export const moveToDone = toDoSlice.actions.moveToDone;
