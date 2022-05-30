@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Keyboard } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Keyboard } from 'react-native';
 
-export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos, fullData }) {
+export default function Search({ toDos, setToDos, fullData }) {
     const [query, setQuery] = useState('');
 
     const changeHandler = (val) => {
@@ -18,7 +18,6 @@ export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos,
         Keyboard.dismiss();
     }
 
-    // search
     const handleSearch = (input) => {
         const inputWithoutSpecialCharacters = input.replace(/[^a-zA-Z0-9 ]/g, '');
         const formattedQuery = inputWithoutSpecialCharacters.toLowerCase();
@@ -26,9 +25,6 @@ export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos,
         setToDos(searchResult);
         setQuery(formattedQuery);
         Keyboard.dismiss()
-        console.log('input utan ändring', input);
-        console.log('input utan specialtecken', inputWithoutSpecialCharacters);
-        console.log('input utan specialtecken och lowercase', formattedQuery);
     };
 
     return (
@@ -37,7 +33,6 @@ export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos,
                 style={styles.input}
                 placeholder='Search'
                 value={query}
-                // onChangeText={(val) => searchHandler(val)}
                 onChangeText={changeHandler}
             />
             <View style={styles.buttons}>
@@ -50,21 +45,6 @@ export default function Search({ /*searchHandler, clearSearch*/ toDos, setToDos,
             </View>
         </View>
     )
-
-    // return (
-    //     <View>
-    //         <TextInput
-    //             style={styles.input}
-    //             placeholder='Search'
-    //             onChangeText={(val) => handleSearch(val)}
-    //         />
-    //         <View style={styles.icons}>
-    //                     <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
-    //                         <MaterialCommunityIcons name="close" size={24} color="black" />
-    //                     </TouchableOpacity>
-    //                 </View>
-    //     </View>
-    // )
 }
 
 const styles = StyleSheet.create({
@@ -78,10 +58,6 @@ const styles = StyleSheet.create({
     icons: {
         flexDirection: 'row'
     },
-    // search: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between'
-    // },
     touchables: {
         paddingLeft: 5
     },

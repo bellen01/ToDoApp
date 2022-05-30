@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+
 export default function Header({ title }) {
     return (
         <View style={styles.header}>
@@ -13,7 +14,6 @@ export default function Header({ title }) {
 
 const styles = StyleSheet.create({
     header: {
-        // height: 80,
         padding: 15,
         backgroundColor: 'coral'
     },

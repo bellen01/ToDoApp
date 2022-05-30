@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore/lite';
 import { removeTodo, moveToInprogress, moveToDone } from '../redux/allData';
-// import Header from './components/header';
 
 export default function TodoItem({ item, toDos, setToDos, db }) {
 

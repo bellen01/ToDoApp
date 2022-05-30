@@ -23,31 +23,12 @@ import List from '../components/list';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// const todos = collection(db, 'ToDos');
-// getDocs(todos).then((data) => {
-//     console.log(data.size);
-//     const sven = data.docs.map(doc => doc.data());
-//     console.log(sven);
-// });
-// const docRef = doc(db, "ToDos", "ISA3QOTLTQ9d3NKuT8wb");
-// getDoc(docRef).then(docSnap => {
-//     if (docSnap.exists()) {
-//         console.log("Document data:", docSnap.data());
-//     } else {
-//         // doc.data() will be undefined in this case
-//         console.log("No such document!");
-//     }
-// });
+
 
 export default function Home() {
 
     const allItems = useSelector((state) => state.toDo.item);
     const dispatch = useDispatch();
-
-    console.log('sven', allItems);
-
-
-
 
     const [toDos, setToDos] = useState([]);
     const todoCol = collection(db, 'ToDos');
@@ -120,14 +101,9 @@ export default function Home() {
     // }, [])
 
     const regEx = /^[^!-\/:-@\[-`{-~]+$/;
-    // const regEx = /^[^a]+$/;
 
     const addNewToDoHandler = async (text, setText) => {
-        console.log(text);
-        // const input = text.toString();
-        console.log('fel')
         if (regEx.test(text) === false) {
-            console.log('hit kommer vi');
             Alert.alert('Sorry', 'you can not add todos with special characters.', [
                 { text: 'Understood', onPress: () => console.log('alert closed') }
             ])
@@ -135,12 +111,9 @@ export default function Home() {
             const newTodo = await addDoc(todoCol, { text: text, status: 0 });
             const doc = await getDoc(newTodo);
             const docWithId = { ...doc.data(), id: doc.id };
-            //TODO: ändra nedan till allItems eller docWithId?
-            // setToDos([...toDos, docWithId]);
             dispatch(addTodo(docWithId));
             Keyboard.dismiss();
             setText('');
-            // console.log('ny', doc.data());
         } else {
             Alert.alert('Oops!', 'Todos must be over 3 chars long', [
                 { text: 'Understood', onPress: () => console.log('alert closed') }
@@ -148,151 +121,6 @@ export default function Home() {
         }
     }
 
-    // const deleteHandler = async (id) => {
-    //     const todoDoc = doc(db, 'ToDos', id);
-    //     await deleteDoc(todoDoc);
-    //     setToDos((prevToDos) => {
-    //         return prevToDos.filter(todo => todo.id != id)
-    //     });
-    //     dispatch(removeTodo(id));
-    // }
-
-    // const inProgressHandler = async (id) => {
-    //     const todoDoc = doc(db, 'ToDos', id);
-    //     const newStatus = { status: 1 };
-    //     await updateDoc(todoDoc, newStatus);
-    //     dispatch(moveToInprogress(id));
-    //     // const updatedDoc = setToDos.find(doc => doc.id == id);
-    //     // updatedDoc.status = 1;
-    //     // const updatedId = 
-    //     // setInProgress((prevInProgress) => {
-    //     // }
-    //     //console.log('done was clicked');
-    // }
-
-    // const doneHandler = async (id) => {
-    //     const todoDoc = doc(db, 'ToDos', id);
-    //     const newStatus = { status: 2 };
-    //     await updateDoc(todoDoc, newStatus);
-    //     dispatch(moveToDone(id));
-    //     //console.log('done was clicked');
-    // }
-
-
-
-    // function renderHeader() {
-    //     return (
-    //         <View
-    //             style={{
-    //                 backgroundColor: '#fff',
-    //                 padding: 10,
-    //                 marginVertical: 10,
-    //                 borderRadius: 20,
-    //                 flexDirection: 'row',
-    //                 justifyContent: 'space-between'
-    //             }}
-    //         >
-    //             <TextInput
-    //                 autoCapitalize='none'
-    //                 autoCorrect={false}
-    //                 // clearButtonMode="always"
-    //                 value={query}
-    //                 onChangeText={(val) => handleSearch(val)}
-    //                 placeholder="Search"
-    //                 style={{
-    //                     backgroundColor: '#fff',
-    //                 }}
-    //             />
-    //             <View style={styles.icons}>
-    //                 <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
-    //                     <MaterialCommunityIcons name="close" size={24} color="black" />
-    //                 </TouchableOpacity>
-    //             </View>
-
-    //         </View>
-    //     )
-    // }
-
-
-    //Flyttat till search
-    // const clearSearch = () => {
-    //     setToDos(fullData);
-    //     Keyboard.dismiss();
-    // }
-
-    // // search
-    // const handleSearch = (input) => {
-    //     const formattedQuery = input.toLowerCase();
-    //     const searchResult = toDos.filter(doc => doc.text.toLowerCase().includes(formattedQuery));
-    //     setToDos(searchResult);
-    //     Keyboard.dismiss()
-    // };
-
-
-
-
-    //renderHeader funktion som inte fungerar
-    // const changeHandler = (val) => {
-    //     setQuery(val);
-    // }
-
-    // function renderHeader() {
-    //     return (
-    //         <View
-    //             style={styles.search}
-    //         >
-    //             <TextInput
-    //                 style={styles.input}
-    //                 placeholder='Search'
-    //                 onChangeText={changeHandler}
-    //                 value={query}
-    //             />
-    //             <View style={styles.icons}>
-    //                 <TouchableOpacity onPress={clearSearch} style={styles.touchables} >
-    //                     <MaterialCommunityIcons name="close" size={24} color="black" />
-    //                 </TouchableOpacity>
-    //                 <TouchableOpacity onPress={() => handleSearch(query)} style={styles.touchables} >
-    //                     <MaterialCommunityIcons name="magnify" size={24} color="black" />
-    //                 </TouchableOpacity>
-    //             </View>
-
-    //         </View>
-    //     )
-    // }
-
-    // search
-    // const handleSearch = (input) => {
-    //     const formattedQuery = input.toLowerCase();
-    //     const filteredData = filter(fullData, text => {
-    //         return contains(text, formattedQuery);
-    //     });
-    //     setFullData(filteredData);
-    //     setQuery(input);
-    // };
-
-    // const contains = ({ text }, query) => {
-    //     const { text } = text;
-    //     if (text.includes(query)) {
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // const submitHandler = async (text) => {
-
-    //     if (text.length > 3) {
-    //         setToDos((prevToDos) => {
-    //             return [
-    //                 { text: text, status: 0, id: Math.random().toString() },
-    //                 ...prevToDos
-    //             ]
-    //         })
-    //     } else {
-    //         Alert.alert('Oops!', 'Todos must be over 3 chars long', [
-    //             { text: 'Understood', onPress: () => console.log('alert closed') }
-    //         ])
-    //     }
-    // }
 
     return (
         <TouchableWithoutFeedback onPress={() => {
@@ -302,9 +130,8 @@ export default function Home() {
                 <StatusBar style="auto" />
                 <Header title="To Do's" />
                 <View style={styles.content}>
-                    {/* <SearchTodo searchHandler={ } /> */}
                     <AddTodo submitHandler={addNewToDoHandler} />
-                    <Search /*searchHandler={handleSearch} clearSearch={clearSearch}*/ setToDos={setToDos} fullData={fullData} toDos={toDos} />
+                    <Search setToDos={setToDos} fullData={fullData} toDos={toDos} />
                     <List toDos={toDos} setToDos={setToDos} db={db} />
                     {/* <View style={styles.list}>
                         <FlatList
